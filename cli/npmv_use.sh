@@ -32,6 +32,6 @@ rm -rf "$npm_bin/npm";
 rm -rf "$npm_bin/npx";
 
 ln -sf node_modules/npm "$npm_root"
-ln -sf node_modules/.bin/npm  "$npm_bin/npm"
-ln -sf node_modules/.bin/npx  "$npm_bin/npx"
+#ln -sf node_modules/.bin/npm  "$npm_bin/npm"
+#ln -sf node_modules/.bin/npx  "$npm_bin/npx"
 
