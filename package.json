@@ -4,7 +4,8 @@
   "description": "Semver-oriented TypeScript library skeleton.",
   "main": "dist/index.js",
   "bin": {
-    "example": "cli/example.sh"
+    "npmv": "cli/npmv.sh",
+    "npmv_use": "cli/npmv_use.sh"
   },
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
