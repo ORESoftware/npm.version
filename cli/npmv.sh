@@ -10,16 +10,32 @@ export npmv_no_color='\033[0m'
 
 zmx(){
 	 "$@"  \
-        2> >( while read line; do echo -e "${r2g_magenta}[${zmx_command_name}]${r2g_no_color} $line"; done ) \
-        1> >( while read line; do echo -e "${r2g_gray}[${zmx_command_name}]${r2g_no_color} $line"; done )
+        2> >( while read line; do echo -e "${r2g_magenta}${zmx_command_name}${r2g_no_color} $line"; done ) \
+        1> >( while read line; do echo -e "${r2g_gray}${zmx_command_name}${r2g_no_color} $line"; done )
 }
 
 first_arg="$1"
 shift 1;
 
-export zmx_command_name="npmv/$first_arg"
+export zmx_command_name="[npmv/$first_arg]"
 export npmvv="$HOME/.npmv_stash/versions";
 mkdir -p "$npmvv"
+
+npmv_match_arg(){
+    # checks to see if the first arg, is among the remaining args
+    # for example  ql_match_arg --json --json # yes
+    first_item="$1"; shift;
+    for var in "$@"; do
+        if [[ "$var" == "$first_item" ]]; then
+          return 0;
+        fi
+    done
+    return 1;
+}
+
+export -f npmv_match_arg;
+export -f zmx;
+
 
 if [ "$first_arg" == "use" ]; then
 
@@ -29,6 +45,10 @@ elif [ "$first_arg" == "ls" ]; then
 
     zmx ls "$npmvv"
     zmx echo "Total number of installations: $(ls "$npmvv" | wc -l)"
+
+elif [ "$first_arg" == "install" ]; then
+
+    zmx npmv_install $@
 
 elif [ "$first_arg" == "rm" ] || [ "$first_arg" == "remove" ]; then
 
@@ -42,3 +62,5 @@ else
  echo "no command recognized, try (kk5 rm, kk5 use, kk5 install, kk5 ls)";
 
 fi
+
+

@@ -6,18 +6,6 @@ my_args=( "$@" );
 
 ## --reinstall flag => will reinstall version if that version already exists on the fs
 
-npmv_match_arg(){
-    # checks to see if the first arg, is among the remaining args
-    # for example  ql_match_arg --json --json # yes
-    first_item="$1"; shift;
-    for var in "$@"; do
-        if [[ "$var" == "$first_item" ]]; then
-          return 0;
-        fi
-    done
-    return 1;
-}
-
 has_latest="no";
 
 if npmv_match_arg "--latest" "${my_args[@]}"; then
@@ -49,7 +37,7 @@ if [ -z "$ver" ]; then
     ver="$(npm view --json "npm@$desired_npm_version" version | kk5_parse_json)"
 
     if [ -n "$ver" ]; then
-        echo "latest version found on npm => $desired_npm_version";
+        echo "latest version found on npm => $ver";
     fi
 
 else
@@ -69,7 +57,7 @@ if [ ! -d "$desired_v" ]; then
 
   mkdir -p "$desired_v";
   cd "$desired_v";
-  echo "Installing new npm version: $desired_v"
+  echo "Installing new npm version: $desired_npm_version"
   npm init -f &> /dev/null;
   mkdir -p node_modules;
   npm install --save "npm@$desired_npm_version" -f -s || {
