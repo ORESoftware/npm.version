@@ -1,11 +1,11 @@
 {
-  "name": "@oresoftware/npm.version",
-  "version": "0.0.1002",
+  "name": "@oresoftware/npv",
+  "version": "0.0.1003",
   "description": "Semver-oriented TypeScript library skeleton.",
   "main": "dist/index.js",
   "bin": {
     "kk5": "cli/npmv.sh",
-    "npmv": "cli/npmv.sh",
+    "npv": "cli/npmv.sh",
     "npmv_use": "cli/npmv_use.sh",
     "npmv_rm": "cli/npmv_rm.sh",
     "npmv_install": "cli/npmv_install.sh",
