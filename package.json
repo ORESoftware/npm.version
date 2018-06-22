@@ -7,7 +7,9 @@
     "kk5": "cli/npmv.sh",
     "npmv": "cli/npmv.sh",
     "npmv_use": "cli/npmv_use.sh",
-    "npmv_rm": "cli/npmv_rm.sh"
+    "npmv_rm": "cli/npmv_rm.sh",
+    "npmv_rm_all": "cli/npmv_remove_all.sh",
+    "kk5_parse_json": "cli/json_parser.js"
   },
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",

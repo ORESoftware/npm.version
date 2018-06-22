@@ -2,6 +2,7 @@
 
 set -e;
 desired_npm_version="$1"
+export npmvv="$HOME/.npmv_stash/versions"
 
 mkdir -p "$HOME/.npmv_stash/versions";
 
@@ -11,19 +12,21 @@ if [ -z "$desired_npm_version" ]; then
 fi
 
 echo "checking to see if version exists...";
-ver="$(npm view "npm@$desired_npm_version" version | tail -n 1 | sed "s/'/ /g")"
+#ver="$(npm view "npm@$desired_npm_version" version | tail -n 1 | sed "s/'/ /g")"
 
-#ver="$(npm view --json "npm@$desired_npm_version" version)"
+ver="$(npm view --json "npm@$desired_npm_version" version | kk5_parse_json)"
 
 if [ -z "$ver" ]; then
   echo "Could not find an actual npm version corresponding to: $desired_npm_version";
   exit 1;
 fi
 
-echo "latest version found on npm => $ver";
+desired_npm_version="$ver"
+
+echo "latest version found on npm => $desired_npm_version";
 
 #ver="$(node -pe "String('$ver').split(' ')[0].split('@')[1]")"
-echo "will install this version now: $ver"
+echo "will install this version now: $desired_npm_version"
 
 desired_v="$npmvv/$desired_npm_version"
 
@@ -66,4 +69,5 @@ fi
 ln -sf  "$npm_source" "$npm_bin/npm"
 ln -sf  "$npx_source" "$npm_bin/npx"
 
+echo "Total number of installations: $(ls "$npmvv" | wc -l)"
 echo "new npm version: $(npm -v)"
