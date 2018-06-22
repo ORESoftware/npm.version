@@ -31,8 +31,7 @@ $ npmv use 6
 ```
 
 The above will look to see if any local versions match 6* <br>
-If no local versions match, then it will go to NPM to get the latest <br>
-version that starts with 6. <br>
+If no local versions match, then it will go to NPM to get the latest version that starts with 6. <br>
 
 If you use the `--latest` flag:
 
