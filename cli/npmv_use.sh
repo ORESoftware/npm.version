@@ -4,6 +4,8 @@ set -e;
 
 my_args=( "$@" );
 
+## --reinstall flag => will reinstall version if that version already exists on the fs
+
 npmv_match_arg(){
     # checks to see if the first arg, is among the remaining args
     # for example  ql_match_arg --json --json # yes
@@ -32,7 +34,7 @@ if [ -z "$desired_npm_version" ]; then
   exit 1;
 fi
 
-echo "checking to see if version exists...";
+echo "checking to see if version matching $desired_npm_version* exists...";
 #ver="$(npm view "npm@$desired_npm_version" version | tail -n 1 | sed "s/'/ /g")"
 
 ver="";
@@ -52,6 +54,7 @@ if [ -z "$ver" ]; then
 
 else
    ver="$(basename "$ver")"
+   echo "Found existing matching version $ver"
 fi
 
 if [ -z "$ver" ]; then
@@ -60,10 +63,6 @@ if [ -z "$ver" ]; then
 fi
 
 desired_npm_version="$ver"
-
-#ver="$(node -pe "String('$ver').split(' ')[0].split('@')[1]")"
-echo "will install this version now: $desired_npm_version"
-
 desired_v="$npmvv/$desired_npm_version"
 
 if [ ! -d "$desired_v" ]; then
@@ -79,15 +78,11 @@ if [ ! -d "$desired_v" ]; then
    }
 fi
 
-echo "current npm version: $(npm -v)"
-echo "npm root: $(npm root -g)"
-
+echo -e "Current npm version: ${npmv_cyan}$(npm -v)${npmv_no_color}"
 cd "$npmvv/$desired_npm_version";
 
 npm_root="$(npm root -g)";
 npm_bin="$(npm bin -g)";
-
-echo "pwd: $PWD"
 
 rm -rf "$npm_root/npm";
 
@@ -101,9 +96,8 @@ if [ ! -f "$npm_source" ]; then
    exit 1;
 fi
 
-
 ln -sf  "$npm_source" "$npm_bin/npm"
 ln -sf  "$npx_source" "$npm_bin/npx"
 
-echo "Total number of installations: $(ls "$npmvv" | wc -l)"
-echo "new npm version: $(npm -v)"
+echo -e "Total number of installations: ${npmv_cyan}$(ls "$npmvv" | wc -l)${npmv_no_color}"
+echo -e "New npm version: ${npmv_cyan}$(npm -v)${npmv_no_color}"

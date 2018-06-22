@@ -35,7 +35,7 @@ while read line; do
  echo "Found a matching installation directory: $npm_install_dir";
 
  if [[ ${read_link} =~ ^$npm_install_dir ]]; then
-     echo "Found directory with your current npm version, will attempt to install new npm to replace it."
+     echo "Found directory with your current npm version ($current_npm_version), will attempt to install the same npm to replace it."
      npm install -g "npm@$current_npm_version" || {
        echo -e "${npmv_magenta}Could not install new npm version $current_npm_version${npmv_no_color}";
        exit 1;
