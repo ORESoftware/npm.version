@@ -1,6 +1,27 @@
 #!/usr/bin/env bash
 
 set -e;
+
+my_args=( "$@" );
+
+npmv_match_arg(){
+    # checks to see if the first arg, is among the remaining args
+    # for example  ql_match_arg --json --json # yes
+    first_item="$1"; shift;
+    for var in "$@"; do
+        if [[ "$var" == "$first_item" ]]; then
+          return 0;
+        fi
+    done
+    return 1;
+}
+
+has_latest="no";
+
+if npmv_match_arg "--latest" "${my_args[@]}"; then
+    has_latest="yes";
+fi
+
 desired_npm_version="$1"
 export npmvv="$HOME/.npmv_stash/versions"
 
@@ -14,7 +35,24 @@ fi
 echo "checking to see if version exists...";
 #ver="$(npm view "npm@$desired_npm_version" version | tail -n 1 | sed "s/'/ /g")"
 
-ver="$(npm view --json "npm@$desired_npm_version" version | kk5_parse_json)"
+ver="";
+
+if [[ "$has_latest" != "yes" ]]; then
+    ver="$(find "$npmvv" -type d -name "$desired_npm_version"* | sort | tail -n 1)"
+fi
+
+if [ -z "$ver" ]; then
+
+    echo "Going to NPM to find the latest version that matches: $desired_npm_version";
+    ver="$(npm view --json "npm@$desired_npm_version" version | kk5_parse_json)"
+
+    if [ -n "$ver" ]; then
+        echo "latest version found on npm => $desired_npm_version";
+    fi
+
+else
+   ver="$(basename "$ver")"
+fi
 
 if [ -z "$ver" ]; then
   echo "Could not find an actual npm version corresponding to: $desired_npm_version";
@@ -22,8 +60,6 @@ if [ -z "$ver" ]; then
 fi
 
 desired_npm_version="$ver"
-
-echo "latest version found on npm => $desired_npm_version";
 
 #ver="$(node -pe "String('$ver').split(' ')[0].split('@')[1]")"
 echo "will install this version now: $desired_npm_version"
