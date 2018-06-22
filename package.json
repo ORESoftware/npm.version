@@ -4,6 +4,7 @@
   "description": "Semver-oriented TypeScript library skeleton.",
   "main": "dist/index.js",
   "bin": {
+    "kk5": "cli/npmv.sh",
     "npmv": "cli/npmv.sh",
     "npmv_use": "cli/npmv_use.sh",
     "npmv_rm": "cli/npmv_rm.sh"
