@@ -1,10 +1,24 @@
 
-## @oresoftware/npm.version
+# @oresoftware/npm.version
 
-## => Change NPM versions, just like changing Node versions with NVM
+>
+> Change NPM versions, just like changing Node versions with NVM
+>
 
+***Caveat***
 
-### Installation >  ```$ npm i -g '@oresoftware/npm.version'```
+Not all NPM versions are compatible with all Node versions.
+Many NPM versions are not compatible with older or newer Node versions.
+
+# Installation
+
+<br>
+
+```bash
+$ npm i -g '@oresoftware/npm.version'
+```
+
+<br>
 
 ## Usage
 
@@ -25,6 +39,7 @@ $ npmv use 6 --latest
 ```
 
 then you will always get the latest version from NPM that starts with 6.
+
 <br>
 
 <i>__List all existing versions__</i>
@@ -43,6 +58,8 @@ $ npmv rm 6*
 
 The above will remove all versions that start with 6.
 
+<br>
+
 <i>__Remove all versions__</i>
 
 ```bash
@@ -51,3 +68,6 @@ $ npmv remove-all
 
 The above will remove all versions. NPM will then be <br>
 replaced with the latest version: `npm install -g npm@latest`
+
+
+
