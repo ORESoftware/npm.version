@@ -5,14 +5,16 @@
 > Change NPM versions, just like changing Node versions with NVM
 >
 
-***Caveat***
+<br>
+
+***Caveat/Disclaimer***
 
 Not all NPM versions are compatible with all Node versions.
 Many NPM versions are not compatible with older or newer Node versions.
 
-# Installation
-
 <br>
+
+# Installation
 
 ```bash
 $ npm i -g '@oresoftware/npm.version'
