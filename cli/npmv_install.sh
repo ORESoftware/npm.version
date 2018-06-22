@@ -31,7 +31,7 @@ if [ -z "$desired_npm_version" ]; then
   exit 1;
 fi
 
-echo "checking to see if version matching $desired_npm_version* exists...";
+echo -e "Checking to see if version matching $desired_npm_version* exists...";
 ver="";
 
 if [[ "$has_latest" != "yes" ]]; then
@@ -49,20 +49,26 @@ if [ -z "$ver" ]; then
 
 else
    ver="$(basename "$ver")"
-   echo "Found existing matching version $ver"
+   echo -e "Found existing matching version $ver"
 fi
 
 if [ -z "$ver" ]; then
-  echo "Could not find an actual npm version corresponding to: $desired_npm_version";
+  echo -e "Could not find an actual npm version corresponding to: $desired_npm_version";
   exit 1;
 fi
 
 desired_npm_version="$ver"
 desired_v="$npmvv/$desired_npm_version"
 
+npmv_echo_info(){
+    local desired_npm_version="$1"
+    echo -e "To now switch to this new version run: ${npmv_gray}'npmv use ${desired_npm_version}'${npmv_no_color}"
+    echo -e "You could have done this all in one step using: ${npmv_gray}'npmv use ${desired_npm_version:0:1} --latest'${npmv_no_color}"
+}
+
 if [ -d "$desired_v" ] && [ "$has_reinstall" != "yes" ]; then
-   echo "Version $desired_npm_version is already installed. To force reinstall, use the '--reinstall' flag.";
-   echo "To switch to this version use: 'npmv use $desired_npm_version'"
+   echo -e "Version $desired_npm_version is already installed. To force reinstall, use the '--reinstall' flag.";
+   npmv_echo_info "$desired_npm_version"
    exit 0;
 fi
 
@@ -73,9 +79,8 @@ echo "Installing new npm version: $desired_npm_version"
 npm init -f &> /dev/null;
 mkdir -p node_modules;
 npm install --save "npm@$desired_npm_version" -f -s || {
-  echo "Could not install new npm version";
+  echo -e "${npmv_magenta}Could not install new npm version.${npmv_no_color}";
   exit 1;
 }
 
-echo "To switch to this version run: 'npmv use $desired_npm_version'"
-echo "To do all of this in one step you can use: 'npmv use $desired_npm_version --latest'"
+npmv_echo_info "$desired_npm_version"
