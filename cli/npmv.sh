@@ -11,7 +11,12 @@ if [ "$first_arg" == "use" ]; then
 
     npmv_use "$@"
 
+elif [ "$first_arg" == "rm" ] || [ "$first_arg" == "remove" ]; then
+
+    npmv_rm "$@"
+
 else
 
  echo "no command recognized";
+
 fi

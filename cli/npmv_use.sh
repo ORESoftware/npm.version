@@ -3,10 +3,27 @@
 set -e;
 desired_npm_version="$1"
 
+mkdir -p "$HOME/.npmv_stash/versions";
+
 if [ -z "$desired_npm_version" ]; then
   echo >&2 "No desired npm version provided.";
   exit 1;
 fi
+
+echo "checking to see if version exists...";
+ver="$(npm view "npm@$desired_npm_version" version | tail -n 1 | sed "s/'/ /g")"
+
+#ver="$(npm view --json "npm@$desired_npm_version" version)"
+
+if [ -z "$ver" ]; then
+  echo "Could not find an actual npm version corresponding to: $desired_npm_version";
+  exit 1;
+fi
+
+echo "latest version found on npm => $ver";
+
+#ver="$(node -pe "String('$ver').split(' ')[0].split('@')[1]")"
+echo "will install this version now: $ver"
 
 desired_v="$npmvv/$desired_npm_version"
 
@@ -14,12 +31,16 @@ if [ ! -d "$desired_v" ]; then
 
   mkdir -p "$desired_v";
   cd "$desired_v";
-  npm init -f --silent;
+  echo "Installing new npm version: $desired_v"
+  npm init -f &> /dev/null;
   mkdir -p node_modules;
-  npm install "npm@$desired_npm_version" -f --silent
-
+  npm install --save "npm@$desired_npm_version" -f -s || {
+      echo "Could not install new npm version";
+      exit 1;
+   }
 fi
 
+echo "current npm version: $(npm -v)"
 echo "npm root: $(npm root -g)"
 
 cd "$npmvv/$desired_npm_version";
@@ -27,11 +48,22 @@ cd "$npmvv/$desired_npm_version";
 npm_root="$(npm root -g)";
 npm_bin="$(npm bin -g)";
 
+echo "pwd: $PWD"
+
 rm -rf "$npm_root/npm";
-rm -rf "$npm_bin/npm";
-rm -rf "$npm_bin/npx";
 
-ln -sf node_modules/npm "$npm_root"
-#ln -sf node_modules/.bin/npm  "$npm_bin/npm"
-#ln -sf node_modules/.bin/npx  "$npm_bin/npx"
+ln -s "$PWD/node_modules/npm" "$npm_root/npm";
 
+npm_source="$(readlink -f "$PWD/node_modules/.bin/npm")";
+npx_source="$(readlink -f "$PWD/node_modules/.bin/npx")";
+
+if [ ! -f "$npm_source" ]; then
+   echo "npm file was not installed correctly.";
+   exit 1;
+fi
+
+
+ln -sf  "$npm_source" "$npm_bin/npm"
+ln -sf  "$npx_source" "$npm_bin/npx"
+
+echo "new npm version: $(npm -v)"

@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "bin": {
     "npmv": "cli/npmv.sh",
-    "npmv_use": "cli/npmv_use.sh"
+    "npmv_use": "cli/npmv_use.sh",
+    "npmv_rm": "cli/npmv_rm.sh"
   },
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
