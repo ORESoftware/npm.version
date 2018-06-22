@@ -84,3 +84,4 @@ npm install --save "npm@$desired_npm_version" -f -s || {
 }
 
 npmv_echo_info "$desired_npm_version"
+exit 0; # redundant, but to be clear
