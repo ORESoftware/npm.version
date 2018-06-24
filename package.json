@@ -1,6 +1,6 @@
 {
   "name": "@oresoftware/npv",
-  "version": "0.0.1003",
+  "version": "0.0.1004",
   "description": "Semver-oriented TypeScript library skeleton.",
   "main": "dist/index.js",
   "bin": {
