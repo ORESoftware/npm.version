@@ -2,13 +2,29 @@
 
 
 npmv(){
+  npv $@
+}
 
-  if [ -z "$(which npmv)" ]; then
-     npm install -g "@oresoftware/npm.version" || {
-       echo >&2 "Could not install '@oresoftware/npm.version'...";
-       exit 1;
+kk5(){
+  npv $@
+}
+
+npv(){
+
+   if ! type -f npv &> /dev/null || ! which npv &> /dev/null; then
+
+     npm i -s -g "@oresoftware/npv" || {
+       echo >&2 "Could not install '@oresoftware/npv'...";
+       echo >&2 "Please check your permissions to install global NPM packages.";
+       return 1;
      }
   fi
 
-  command npmv $@
+  command npv $@;
 }
+
+
+
+export -f kk5;
+export -f npv;
+export -f npmv;
